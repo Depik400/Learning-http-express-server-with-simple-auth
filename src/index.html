@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Text</title>
+  </head>
+  <body>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      input {
+        margin: 5px;
+        padding: 5px;
+      }
+
+      .formstatus {
+        display: flex;
+        justify-content: center;
+      }
+      input {
+        width: 100%;
+      }
+      .auth {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+      .register {
+        display: flex;
+      }
+    </style>
+    <div class="formstatus">
+      <div class="auth">
+        <input type="text" name="login" id="login" placeholder="логин" />
+        <input type="password" name="pass" id="pass" placeholder="пароль" />
+        <div class="register">
+          <input type="submit" name="submit" id="submit" value = "Войти" />
+          <input type="submit" name="register" id="register" value="Зарегистрироваться" />
+        </div>
+      </div>
+    </div>
+    <script>
+      function sendData(url) {
+        data = {
+          login: $("#login").val(),
+          pass: $("#pass").val(),
+        };
+        $.ajax({
+          url: url,
+          method: "POST",
+          dataType: "json",
+          data: data,
+          success: function (d) {
+            if (d.status == "register_ok") {
+              alert("register success");
+              return;
+            }
+            if (d.status == "register_failed") {
+              alert("register failed");
+              return;
+            }
+            if (d.status == "login_ok") {
+              alert("User Found");
+              return;
+            } else {
+              alert("User not found");
+            }
+          },
+        }).then((d) => {});
+      }
+
+      $("#submit").click(() => {
+        console.log("log");
+        sendData("/login");
+      });
+
+      $("#register").click(() => {
+        console.log("reg");
+        sendData("/signup");
+      });
+    </script>
+  </body>
+</html>
